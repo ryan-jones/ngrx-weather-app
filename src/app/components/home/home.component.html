@@ -1,0 +1,14 @@
+<div class="container-fluid">
+  <div *ngIf="cityState" class="row">
+    <div class="col-6">
+      <h2>{{ cityState.name }}</h2>
+      <p>{{ cityState.sys.country }}</p>
+    </div>
+    <div class="col-6">
+      <h2> Current Temperature - {{ cityState.main.temp }}</h2>
+      <p>{{ cityState.weather.description }}</p>
+      <p> High of - {{ cityState.main.temp_max }}</p>
+      <p> Low of - {{ cityState.main.temp_min }}</p>
+    </div>
+  </div>
+</div>
