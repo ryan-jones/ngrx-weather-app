@@ -1,18 +1,22 @@
-<nav class="navbar navbar-expand-sm navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="#">Weather App</a>
-  <button (click)="onToggleCollapse()" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <button 
+    (click)="onToggleCollapse()" 
+    class="navbar-toggler" 
+    type="button" 
+    data-toggle="collapse" 
+    data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" 
+    aria-expanded="false" 
+    aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <div [class.show]="showNav" class="collapse navbar-collapse" id="navbarSupportedContent">
+  <div [class.show]="navStatus" class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li *ngFor="let city of cities" class="nav-item active">
         <p (click)="displayCityValues(city)" class="nav-link mt-3">{{ city }}</p>
       </li>
     </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input #selectedCity class="form-control  mr-sm-2" type="text" id="selectedCity" placeholder="Enter a different city" /> 
-    </form>
   </div>
 </nav>

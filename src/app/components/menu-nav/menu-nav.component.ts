@@ -1,57 +1,48 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import * as fromStore from '../../store/store.reducers';
-import * as StoreActions from '../../store/store.actions';
-import { ICityData } from '../../store/store.reducers';
-
-declare const google;
+import { Store, select } from '@ngrx/store';
+import * as fromWeather from '../../store/weatherStore/weather.reducers';
+import * as StoreActions from '../../store/weatherStore/weather.actions';
+import { take } from 'rxjs/operators';
+import { ICityData } from '../../models/weather.model';
 
 @Component({
   selector: 'app-menu-nav',
   templateUrl: './menu-nav.component.html',
-  styleUrls: ['./menu-nav.component.scss']
+  styleUrls: ['./menu-nav.component.scss'],
 })
 export class MenuNavComponent implements OnInit {
   @ViewChild('selectedCity') cityInput: any;
   public cities = ['Santiago', 'Buenos Aires', 'Lime', 'Sao Paulo'];
-  public navStatus: string = 'closed';
-  private selectedCity: any;
+  public navStatus = false;
 
-  constructor(private store: Store<fromStore.State>) { }
+  constructor(private store: Store<fromWeather.State>) { }
 
   ngOnInit(): void {
-    setInterval(this.updateCityWeatherValues(), (60 * 3000));
-    this.setAutoComplete();
+    this.updateCityWeatherValues();
+    setInterval(() => this.updateCityWeatherValues(), (60 * 3000));
   }
 
   private updateCityWeatherValues(): void {
     this.cities.forEach((city: string) => this.store.dispatch(new StoreActions.FetchTemps(city)));
   }
 
-  private setAutoComplete(): void {
-    const cityAutoComplete = new google.maps.places.Autocomplete(this.cityInput.nativeElement);
-    cityAutoComplete.addListener('place_changed', () => {
-      this.selectedCity = cityAutoComplete.getPlace();
-      this.store.dispatch(new StoreActions.FetchTemps(this.selectedCity.name))
-    });
-  }
-
-  public onToggleCollapse(): void {
-    this.navStatus = this.navStatus === 'open' ? 'closed' : 'open';
-  }
-
   public displayCityValues(city: string): void {
-    this.store.select('citiesData').subscribe((data: ICityData[]) => {
-      if (data) {
-        const cityValue = data.find((cityData: ICityData) => cityData.cityName === city);
-        if (!cityValue) {
-          this.store.dispatch(new StoreActions.FetchTemps(city));
-        } else {
-          this.store.dispatch(new StoreActions.SetTemps(cityValue));
-        }
-      } else {
-        this.store.dispatch(new StoreActions.FetchTemps(city));
-      }
-    });
+    this.store
+      .pipe(
+        select('weather'),
+        take(1)
+      )
+      .subscribe((data: fromWeather.State) => this.updateCurrentCity(data, city));
   }
+
+  private updateCurrentCity(data: fromWeather.State, city: string): void {
+    if (data) {
+      const cityValue: ICityData = data.citiesData.find((cityData: ICityData) => cityData.cityName === city);
+      if (cityValue) {
+        this.store.dispatch(new StoreActions.ChangeCurrentCity(cityValue));
+      }
+    }
+  }
+
+  public onToggleCollapse = (): boolean => this.navStatus = !this.navStatus;
 }

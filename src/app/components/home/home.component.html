@@ -1,14 +1,16 @@
-<div class="container-fluid">
-  <div *ngIf="cityState" class="row">
-    <div class="col-6">
-      <h2>{{ cityState.name }}</h2>
-      <p>{{ cityState.sys.country }}</p>
+<div [ngStyle]="{ 'background-image': backgroundImage }" class="container-fluid p-0 weather">
+  <div *ngIf="cityState" class="row content-row m-0">
+    <div @textReveal class="col-12 m-0 p-0 text-center">
+      <h1 class="mt-3">{{ cityState.name }} ({{ cityState.sys.country }})</h1>
+      <h2>Current Weather: {{ cityState.weather[0].description | capitalize }}</h2>
     </div>
-    <div class="col-6">
-      <h2> Current Temperature - {{ cityState.main.temp }}</h2>
-      <p>{{ cityState.weather.description }}</p>
-      <p> High of - {{ cityState.main.temp_max }}</p>
-      <p> Low of - {{ cityState.main.temp_min }}</p>
+    <div @textReveal class="col-12 text-center">
+      <h2> {{ cityState.main.temp }} C</h2>
+      <p> High of {{ cityState.main.temp_max }} C</p>
+      <p> Low of {{ cityState.main.temp_min }} C</p>
     </div>
   </div>
+</div>
+<div *ngIf="tempChartOpts" class="my-3">
+  <app-chart [data]="tempChartOpts" [height]="'400px'"></app-chart>
 </div>
