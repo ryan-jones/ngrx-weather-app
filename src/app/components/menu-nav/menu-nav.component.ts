@@ -14,6 +14,8 @@ export class MenuNavComponent implements OnInit {
   @ViewChild('selectedCity') cityInput: any;
   public cities = ['Santiago', 'Buenos Aires', 'Lime', 'Sao Paulo'];
   public navStatus = false;
+  public tempDropdown = false;
+  public selectedCity = 'Santiago';
 
   constructor(private store: Store<fromWeather.State>) { }
 
@@ -39,6 +41,7 @@ export class MenuNavComponent implements OnInit {
     if (data) {
       const cityValue: ICityData = data.citiesData.find((cityData: ICityData) => cityData.cityName === city);
       if (cityValue) {
+        this.selectedCity = cityValue.cityName;
         this.store.dispatch(new StoreActions.ChangeCurrentCity(cityValue));
       }
     }

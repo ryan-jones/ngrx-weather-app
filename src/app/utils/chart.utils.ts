@@ -15,11 +15,6 @@ export const createLineChartOpts = (cityData: ICityData) => {
 				}
 			}
 		},
-		toolbox: {
-			feature: {
-				saveAsImage: {}
-			}
-		},
 		grid: {
 			left: '3%',
 			right: '4%',
@@ -35,7 +30,10 @@ export const createLineChartOpts = (cityData: ICityData) => {
 		],
 		yAxis: [
 			{
-				type: 'value'
+				type: 'value',
+				axisLabel: {
+					formatter: '{value} °C'
+				}
 			}
 		],
 		series: [

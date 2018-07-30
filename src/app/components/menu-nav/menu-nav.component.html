@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">Weather App</a>
+  <h1 class="navbar-brand">Weather App</h1>
   <button 
     (click)="onToggleCollapse()" 
     class="navbar-toggler" 
@@ -14,7 +14,7 @@
 
   <div [class.show]="navStatus" class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li *ngFor="let city of cities" class="nav-item active">
+      <li *ngFor="let city of cities" [ngClass]="{'active': selectedCity === city}" class="nav-item">
         <p (click)="displayCityValues(city)" class="nav-link mt-3">{{ city }}</p>
       </li>
     </ul>

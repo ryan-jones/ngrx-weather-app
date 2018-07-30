@@ -38,7 +38,7 @@ export function storeReducer(state = initialState, action: StoreActions.StoreAct
 
 export function setNewCityData(state = initialState, payload: IWeatherData): void {
 	const { temp, temp_min, temp_max } = payload.main;
-	const date = moment().format('DD/MM/YY HH:mm');
+	const date = moment().format('HH:mm (DD/MM)');
 	const weather = { date, temp, temp_max, temp_min };
 
 	if (!state.citiesData.length) {
